@@ -14,6 +14,10 @@ python KPI.py 2>error.log
 if %errorlevel% neq 0 pause exit
 timeout /t 2
 
+python KPI_2.py 2>error.log
+if %errorlevel% neq 0 pause exit
+timeout /t 2
+
 python YTBP.py 2>error.log
 if %errorlevel% neq 0 pause exit
 timeout /t 2

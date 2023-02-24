@@ -31,8 +31,6 @@ def videodata_check(table_content,bangumi_name):
             ]]        
         new_content = id_table.join(new_content,rsuffix = 'new')        
     else:
-        # 去掉第一筆總計值
-        table_content = table_content.tail(-1)
         new_content = table_content[[
             'Content','Views','Watch time (hours)','Subscribers',
             'Impressions click-through rate (%)','Average percentage viewed (%)',
@@ -78,7 +76,10 @@ def videodata_check(table_content,bangumi_name):
     # 合併 video_report 與 content 為table
     table = pd.merge(table_report,new_content, on = 'video_id',how = 'inner')
     
-    # 按影片發布時間排序
+    # 刪除重複的資料(不知道出現重複原因，僅進行刪除)
+    table.drop_duplicates(inplace=True)
+    
+    # 按觀看數(影片發布時間-不採用)排序
     #table = table.sort_values(by = ['time_published'],ascending = True)
     table = table.sort_values(by = ['Views'],ascending = False)
     table = table.reset_index(drop = True)
@@ -96,7 +97,7 @@ def videodata_check(table_content,bangumi_name):
 
 
 
-#建立輸出資料夾
+#建立輸出資料夾，不存在就建立一個
 filepath = "輸出報表/bangumi_report"
 if os.path.isdir(filepath):
     print('directory CHECK OK')
@@ -107,7 +108,7 @@ else:
 
 ########################  影片清單  ###########################
 
-#從完整的影片清單逐項確認表格是否存在，挑出本月的節目
+#從完整的影片清單逐項確認表格是否存在，挑出存在的節目
 full_video_list = ['小麥的健康筆記','小豪出任務','中天車享家_朱朱哥來聊車',
 '世界越來越盧','民間特偵組','全球政經周報','老Z調查線','你的豪朋友','宏色封鎖線_宏色禁區',
 '金牌特派','阿比妹妹','洪流洞見','食安趨勢報告','真心話大冒險',
@@ -128,19 +129,34 @@ for video in full_video_list:
 
 ########################  表格輸出  ###########################
 
+
+
+
+folder_list=[15,14,13,12,11,10,9,8,7,6,5,4,3,2]   #15個table可以涵蓋7500部影片，應該夠用了
+
 for video in video_list:
     print('匹配節目"{}"的資料...'.format(video))
-    # 如果影片超過500部，就合併content的table
+
     Folderpath = "頻道資訊/{}(2)".format(video)
     if os.path.isdir(Folderpath):
-        print('合併節目"{}"的內容'.format(video))
-        tablecontent_1 = pd.read_csv('頻道資訊/{}(1)/Content/Table data.csv'.format(video),encoding = 'utf8')
-        tablecontent_2 = pd.read_csv('頻道資訊/{}(2)/Content/Table data.csv'.format(video),encoding = 'utf8')
-        tablecontent = pd.concat([tablecontent_1,tablecontent_2.tail(-1)],ignore_index = True)
+        # 如果影片超過500部，就合併content的table
+        # 確認有幾個content要做加總計算
+        for number in folder_list:
+            folderpath = "頻道資訊/{}({})".format(video,number)
+            if os.path.isdir(folderpath):
+                total = number
+                break    
+            
+        print('合併節目"{}"的內容，總共{}個group'.format(video,total))
+        tablecontent = pd.DataFrame()
+        for num in range(total):
+            data = pd.read_csv('頻道資訊/{}({})/Content/Table data.csv'.format(video,num+1),encoding = 'utf8')
+            tablecontent = pd.concat([tablecontent,data],ignore_index = True)  
     else:
         tablecontent = pd.read_csv('頻道資訊/{}/Content/Table data.csv'.format(video),encoding = 'utf8')
-    table1 = videodata_check(tablecontent,video)
-    table1.to_csv('輸出報表/bangumi_report/{}.csv'.format(video),encoding = 'utf-8-sig')   # 用utf8會亂碼，big5會缺少資料(部分無法解碼)    
+
+    table_finish = videodata_check(tablecontent,video)
+    table_finish.to_csv('輸出報表/bangumi_report/{}.csv'.format(video),encoding = 'utf-8-sig')   # 用utf8會亂碼，big5會缺少資料(部分無法解碼)    
 
 ########################  bottom  ############################
 
