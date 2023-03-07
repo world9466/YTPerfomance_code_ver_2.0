@@ -132,7 +132,7 @@ for video in full_video_list:
 
 
 
-folder_list=[15,14,13,12,11,10,9,8,7,6,5,4,3,2]   #15個table可以涵蓋7500部影片，應該夠用了
+folder_list=[20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2]   #20個table可以涵蓋1萬部影片，應該夠用了
 
 for video in video_list:
     print('匹配節目"{}"的資料...'.format(video))
