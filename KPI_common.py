@@ -38,14 +38,9 @@ full_video_list = [
     '誰謀殺了言論自由_俠姊',
     '誰謀殺了言論自由_金汝鑫',
     '誰謀殺了言論自由_賴麗櫻',
-    '正常發揮',
-    '國際直球對決',
-    '前進戰略高地',
     '線上面對面',
     '我是二寶爸',
-    '高級酸新聞台',
-    '大新聞大爆卦',
-    '週末大爆卦'
+    '高級酸新聞台'
     ]
 
 video_list = []
@@ -184,7 +179,7 @@ else:
 table = trafficKPI_finish.join(subsKPI_finish,rsuffix = 'subs')
 table = table.join(tranKPI_finish,rsuffix = 'tran')
 print(table)
-table.to_csv('輸出報表/table_KPI.csv',encoding = 'utf-8-sig')
+table.to_csv('輸出報表/table_KPI_common.csv',encoding = 'utf-8-sig')
 
 
 

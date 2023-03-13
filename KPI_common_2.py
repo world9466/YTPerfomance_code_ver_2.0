@@ -36,14 +36,9 @@ full_video_list = [
     '靈異錯別字_鬼錯字',
     '琴謙天下事',
     '誰謀殺了言論自由',
-    '正常發揮',
-    '國際直球對決',
-    '前進戰略高地',
     '線上面對面',
     '我是二寶爸',
-    '高級酸新聞台',
-    '大新聞大爆卦',
-    '週末大爆卦'
+    '高級酸新聞台'
     ]
 
 video_list = []
@@ -123,7 +118,7 @@ else:
 table = trafficKPI.join(subsKPI,rsuffix = 'subs')
 table = table.join(tranKPI,rsuffix = 'tran')
 print(table)
-table.to_csv('輸出報表/table_KPI_2.csv',encoding = 'utf-8-sig')
+table.to_csv('輸出報表/table_KPI_common_2.csv',encoding = 'utf-8-sig')
 
 
 
