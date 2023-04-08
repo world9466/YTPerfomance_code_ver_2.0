@@ -1,0 +1,30 @@
+combine_table.py
+負責將所有壓縮檔解壓縮，整合成excel檔，檔案在video_table資料夾底下
+
+combine_table_2.py
+負責將整合出來的壓縮檔再次整合(超過500部的節目會依數量產生數個excel檔)
+
+KPI_common.py
+計算一般(小)節目的KPI (依YOUTUBER排名)
+
+KPI_common_2.py
+計算一般(小)節目的KPI (依節目排名)
+
+KPI_politics.py.py
+計算政論(大)節目的KPI (依YOUTUBER排名)，但因為現在都是一人一個節目，因此暫時以節目排名即可
+
+KPI_politics.py_2
+計算政論(大)節目的KPI (依節目排名)
+
+YTBP_common.py
+計算一般(小)節目的績效排名 (依收入排名)
+
+YTBP_politics.py
+計算政論(大)節目的績效排名 (依收入排名)
+
+audience.py
+計算全部節目的觀眾樣貌
+
+bangumi.py
+計算每個節目其單支影片的詳細數據
+
