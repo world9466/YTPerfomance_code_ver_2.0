@@ -59,7 +59,7 @@ def bangumi_load(bangumi):
         print("tableTran directory CHECK OK")
         tableTran = pd.read_csv('頻道資訊/{}/Transaction type/Table data.csv'.format(bangumi),encoding = 'utf8')
         # YT後台版本更新，欄位名稱有變，改回原本的
-        tableTran = tableTran.rename(columns={'Fan funding (USD)': 'Your transaction revenue (USD)'})
+        tableTran = tableTran.rename(columns={'Transaction revenue (USD)': 'Your transaction revenue (USD)'})
     else:
         tranfilepath_1 = "頻道資訊/{}/Transaction type".format(bangumi)
         if os.path.isdir(tranfilepath_1):
