@@ -12,7 +12,7 @@ full_video_list = ['小麥的健康筆記','小豪出任務','中天車享家_�
 '綠也掀桌','與錢同行','論文門開箱','鄭妹看世界','螃蟹秀開鍘','獸身男女',
 '靈異錯別字_鬼錯字','琴謙天下事','誰謀殺了言論自由','大新聞大爆卦','週末大爆卦','正常發揮',
 '頭條開講','國際直球對決','前進戰略高地','線上面對面','我是二寶爸','高級酸新聞台',
-'財經風向球','健康點點名']
+'財經風向球','健康點點名','全球大視野','辣晚報']
 video_list = []
 for video in full_video_list:
     videofilepath = "video_table/table_{}.xlsx".format(video)
@@ -250,7 +250,7 @@ for video in video_list:
     aud_1 = table_generator(table)
     aud = pd.concat([aud,aud_1],ignore_index=True)
 
-aud = aud.sort_values(by = ['Your estimated revenue (USD)'],ascending = False)
+aud = aud.sort_values(by = ['總影片數'],ascending = False)
 aud = aud.reset_index(drop = True)
 aud.index+=1
 #aud = aud.drop('YouTube ad revenue (USD)',axis = 1)                   # 給員工看的要刪除，但也可以從excel刪除

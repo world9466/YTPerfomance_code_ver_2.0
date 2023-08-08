@@ -1,7 +1,26 @@
 import pandas as pd
-import os,zipfile,re
+import os,zipfile,re,shutil
 
 ########################  通用函式  ##########################
+
+# 移動壓縮檔案到"壓縮檔"資料夾
+def file_move(bangumi):  
+    dirpath = '頻道資訊/{}/'.format(bangumi)
+    if os.path.isdir(dirpath):
+        files = os.listdir(dirpath)
+        target_directory = '頻道資訊/{}/壓縮檔'.format(bangumi)
+
+        for file in files:
+            category = ['Channel','Content','Geography','Subscription status','Transaction type','Viewer age','Viewer gender']
+            for cate in category:
+                if re.match('{}.*.zip'.format(cate),file):
+                    ex_path = '頻道資訊/{}/壓縮檔'.format(bangumi)
+                    if os.path.isdir(ex_path):
+                        shutil.move(dirpath + file, target_directory)
+                    else:
+                        os.mkdir('頻道資訊/{}/壓縮檔'.format(bangumi))
+                        shutil.move(dirpath + file, target_directory)
+
 
 # 解壓縮所有檔案，如果壓縮檔存在就解壓縮到指定目錄，extractall會自動覆蓋原有檔案
 def file_extract(bangumi):
@@ -9,27 +28,12 @@ def file_extract(bangumi):
     if os.path.isdir(dirpath):
         files = os.listdir(dirpath)
         for file in files:
-            if re.match('Channel.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Channel'.format(bangumi))
-            elif re.match('Content.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Content'.format(bangumi))
-            elif re.match('Geography.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Geography'.format(bangumi))
-            elif re.match('Subscription status.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Subscription status'.format(bangumi))
-            elif re.match('Transaction type.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Transaction type'.format(bangumi))
-            elif re.match('Viewer age.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Viewer age'.format(bangumi))
-            elif re.match('Viewer gender.*.zip',file):
-                zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
-                zf.extractall(path = '頻道資訊/{}/Viewer gender'.format(bangumi))
+            category = ['Channel','Content','Geography','Subscription status','Transaction type','Viewer age','Viewer gender']
+            for cate in category:                
+                if re.match('{}.*.zip'.format(cate),file):
+                    zf = zipfile.ZipFile('頻道資訊/{}/壓縮檔/{}'.format(bangumi,file), 'r')
+                    zf.extractall(path = '頻道資訊/{}/{}'.format(bangumi,cate))
+
 
 
 
@@ -217,7 +221,9 @@ channel_youtuber_list = [
     ('我是二寶爸','賴正鎧'),
     ('高級酸新聞台','李珮瑄'),
     ('財經風向球','畢倩涵'),
-    ('健康點點名','王宜安')
+    ('健康點點名','王宜安'),
+    ('全球大視野','中天電視'),
+    ('辣晚報','中天電視')
     ]
 
 
@@ -230,6 +236,7 @@ order_list = [
 # 如果資料夾路徑存在就執行公式
 for ch_yt in channel_youtuber_list:
     for order in order_list:
+        file_move(ch_yt[0]+order)
         file_extract(ch_yt[0]+order)
         channelpath = "頻道資訊/{}".format(ch_yt[0]+order)
         if os.path.isdir(channelpath):
